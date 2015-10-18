@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 
 /**
@@ -18,7 +16,7 @@ public class SecondActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second_activity);
         this.generateData(1000);
-        MyAdapter adapter = new MyAdapter(this.data);
+        MyAdapter adapter = new MyAdapter(this.data, this.getApplicationContext());
         ListView listView = (ListView)findViewById(R.id.listtt);
         listView.setAdapter(adapter);
     }

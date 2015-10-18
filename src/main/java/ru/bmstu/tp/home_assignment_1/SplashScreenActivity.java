@@ -7,13 +7,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
-
 public class SplashScreenActivity extends ActionBarActivity {
-
+    static boolean backPressed = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +23,11 @@ public class SplashScreenActivity extends ActionBarActivity {
         a.start();
     }
 
+    @Override
+    protected void onStop() {
+        backPressed = true;
+        super.onStop();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,7 +56,9 @@ public class SplashScreenActivity extends ActionBarActivity {
         public void run() {
             try {
                 sleep(2000);
-                test.sendMessage(new Message());
+                if (!backPressed) {
+                    test.sendMessage(new Message());
+                }
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -68,19 +73,19 @@ public class SplashScreenActivity extends ActionBarActivity {
         private Animation test;
     }
 
-
     private static class Animation extends Handler {
         public Animation(SplashScreenActivity listener) {
             this.link = new WeakReference<>(listener);
         }
 
-
         @Override
         public void handleMessage(Message msg) {
-            Toast.makeText(link.get(), "lol", Toast.LENGTH_SHORT).show();
-            Intent startSecond = new Intent(this.link.get(), SecondActivity.class);
-            this.link.get().startActivity(startSecond);
-            this.link.get().finish();
+            SplashScreenActivity hardLink = this.link.get();
+            if (hardLink != null) {
+                Intent startSecond = new Intent(hardLink, SecondActivity.class);
+                hardLink.startActivity(startSecond);
+                hardLink.finish();
+            }
         }
 
         private WeakReference<SplashScreenActivity> link;
