@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,6 +18,7 @@ public class SplashScreenActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         getSupportActionBar().hide();
+        backPressed = false;
 
         Animation animation = new Animation(this);
         ThreadSleep a = new ThreadSleep(animation);
@@ -56,6 +58,7 @@ public class SplashScreenActivity extends ActionBarActivity {
         public void run() {
             try {
                 sleep(2000);
+                Log.d("flag", Boolean.toString(backPressed));
                 if (!backPressed) {
                     test.sendMessage(new Message());
                 }
